@@ -47,7 +47,7 @@ function addRow(filename, prefix, report) {
   report["output_name"] = prefix + "-report.png";
   report["output_name_t"] = prefix + "-report-t.png";
   for (var field in report) {
-    if (!hide_fields[field]) {
+    if (!hide_fields[field] && !field.startsWith("error_")) {
       fields[field] = null;
     }
   }
@@ -90,6 +90,10 @@ function displayRows() {
   th.appendChild(document.createTextNode("report"));
   headersRow.appendChild(th);
 
+  var th = document.createElement("th");
+  th.appendChild(document.createTextNode("errors"));
+  headersRow.appendChild(th);
+
   // Report fields.
   sortedFields.forEach(function(field) {
     var th = document.createElement("th");
@@ -106,32 +110,45 @@ function displayRows() {
     th.appendChild(document.createTextNode(filename));
     tr.appendChild(th);
 
-    var th = document.createElement("th");
+    var td = document.createElement("td");
     var a = document.createElement("a");
     a.href = report["norm_name"];
     var img = document.createElement("img");
     img.src = report["norm_name_t"];
     a.appendChild(img);
-    th.appendChild(a);
-    tr.appendChild(th);
+    td.appendChild(a);
+    tr.appendChild(td);
 
-    var th = document.createElement("th");
+    var td = document.createElement("td");
     var a = document.createElement("a");
     a.href = report["height_name"];
     var img = document.createElement("img");
     img.src = report["height_name_t"];
     a.appendChild(img);
-    th.appendChild(a);
-    tr.appendChild(th);
+    td.appendChild(a);
+    tr.appendChild(td);
 
-    var th = document.createElement("th");
+    var td = document.createElement("td");
     var a = document.createElement("a");
     a.href = report["output_name"];
     var img = document.createElement("img");
     img.src = report["output_name_t"];
     a.appendChild(img);
-    th.appendChild(a);
-    tr.appendChild(th);
+    td.appendChild(a);
+    tr.appendChild(td);
+
+    var errors = "";
+    for (var field in report) {
+      if (field.startsWith("error_")) {
+        if (errors != "") {
+          errors += "\n";
+        }
+        errors += field.substr(6);
+      }
+    }
+    var td = document.createElement("td");
+    td.appendChild(document.createTextNode(errors));
+    tr.appendChild(td);
 
     // Report fields.
     sortedFields.forEach(function(field) {
