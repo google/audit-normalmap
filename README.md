@@ -30,7 +30,8 @@ Furthermore, commonly normalmaps contain height information in the alpha
 channel; this also should usually be consistent with the normal vectors.
 
 This tool verifies these consistency properties of normalmaps to aid with
-quality control of gaming artwork.
+quality control of gaming artwork. It supports both the common Direct3D and
+OpenGL Y axis conventions (a.k.a. green channel inversion).
 
 ### Usage
 
@@ -50,8 +51,10 @@ Options:
 * `-c`: do not show global inconsistencies that can be fixed by scaling the
   image (requires `-o`).
 * `-y`: assume the y coordinate is inverted (i.e. assume the 0,0 coordinate of
-  the image is at the bottom left, as opposed to the top left which is default).
-  This matches most OpenGL based game engines.
+  the image is at the bottom left, as opposed to the top left which is default;
+  this is also known as green channel inversion). This matches most OpenGL based
+  game engines. By default, the y coordinate is interpreted according to the
+  usual convention of Direct3D based game engines.
 * `-7`: assume the range of the normal vector encoding is centered at 127; in
   this case the "flat" normal vector (0,0,1) would be encoded as (127,127,255).
 * `-8`: assume the range of the normal vector encoding is centered at 128; in
